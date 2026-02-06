@@ -1,0 +1,47 @@
+.login-hero {
+    padding: 70px 0 40px;
+    text-align: center;
+    background: linear-gradient(135deg, #ffe3a3, #fff2d3);
+  }
+  
+  .login-hero h1 {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+  }
+  
+  .login-hero p {
+    color: #555;
+  }
+  
+  .login-form-section {
+    padding: 50px 0 80px;
+  }
+
+  .btn_entrar.primary {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+  }
+  
+  .login-form {
+    max-width: 420px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 28px;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f2e0c7;
+  }
+  
+  .login-links {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+  }
+  
+  .login-links a {
+    color: #ff8c42;
+    font-weight: 600;
+  }
+  

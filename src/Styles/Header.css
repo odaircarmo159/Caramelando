@@ -1,0 +1,48 @@
+.site-header {
+    background: #fff;
+    border-bottom: 1px solid #f2e0c7;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .header-content {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .logo {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ff8c42;
+  }
+  
+  .nav {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .nav a {
+    color: #444;
+    font-weight: 600;
+  }
+  
+  .nav a:hover {
+    color: #ff8c42;
+  }
+  
+  .header-btn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    border-width: 1.5px;
+  }
+  
+  .header-btn:hover {
+    background: #ff8c42;
+    color: #fff;
+    transition: 0.2s ease;
+  }
+  
