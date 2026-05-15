@@ -1,0 +1,250 @@
+.login-cute {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at top, #e9f4ff, #f8fbff);
+  position: relative;
+  overflow: hidden;
+  padding: 40px 20px;
+}
+
+.login-bg .paw {
+  position: absolute;
+  font-size: 3.2rem;
+  opacity: 0.08;
+  animation: float 8s ease-in-out infinite;
+}
+
+.p1 { top: 10%; left: 12%; }
+.p2 { top: 25%; right: 18%; animation-delay: 1s; }
+.p3 { bottom: 18%; left: 20%; animation-delay: 2s; }
+.p4 { bottom: 10%; right: 10%; animation-delay: 3s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(8deg); }
+}
+
+.login-card {
+  background: #ffb347;
+  width: min(420px, 92%);
+  border-radius: 22px;
+  padding: 26px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+.login-card h1 {
+  color: #1d2b34;
+  margin: 8px 0 4px;
+}
+
+.login-card p {
+  color: #1d2b34;
+  opacity: 0.85;
+  margin-bottom: 18px;
+}
+
+.dog {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 10px;
+}
+
+.ear {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #1d2b34;
+  border-radius: 0 0 60px 60px;
+  top: -10px;
+  animation: wiggle 3s ease-in-out infinite;
+}
+
+.ear-left { left: -10px; }
+.ear-right { right: -10px; animation-delay: 0.5s; }
+
+.face {
+  width: 180px;
+  height: 180px;
+  background: #ffcb5c;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.eye {
+  position: absolute;
+  top: 55px;
+  width: 18px;
+  height: 18px;
+  background: #1d2b34;
+  border-radius: 50%;
+  animation: blink 4s infinite;
+}
+
+.eye-left { left: 55px; }
+.eye-right { right: 55px; }
+
+@keyframes blink {
+  0%, 95%, 100% { transform: scaleY(1); }
+  97% { transform: scaleY(0.1); }
+}
+
+.snout {
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 70px;
+  background: #ffd88a;
+  border-radius: 40px;
+}
+
+.nose {
+  width: 28px;
+  height: 20px;
+  background: #1d2b34;
+  border-radius: 14px;
+  margin: 12px auto 0;
+}
+
+.tongue {
+  width: 26px;
+  height: 30px;
+  background: #ff8fa3;
+  border-radius: 0 0 16px 16px;
+  margin: 6px auto 0;
+  animation: tongue 2.5s ease-in-out infinite;
+}
+
+@keyframes tongue {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+.paws {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+}
+
+.paws span {
+  width: 28px;
+  height: 18px;
+  background: #1d2b34;
+  border-radius: 8px 8px 12px 12px;
+  animation: paw 2.8s ease-in-out infinite;
+}
+
+.paws span:nth-child(2) { animation-delay: 0.7s; }
+
+@keyframes paw {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  50% { transform: rotate(8deg); }
+}
+
+.login-form-cute {
+  display: grid;
+  gap: 12px;
+}
+
+.login-form-cute label {
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  color: #1d2b34;
+  font-weight: 600;
+}
+
+.login-form-cute input {
+  padding: 11px 12px;
+  border-radius: 10px;
+  border: none;
+  background: #fff;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.password-field {
+  position: relative;
+}
+
+.toggle-pass {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  background: #1d2b34;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.btn-login-cute {
+  margin-top: 6px;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: #1d2b34;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-login-cute:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(29,43,52,0.3);
+}
+
+.login-links-cute {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.login-links-cute a {
+  color: #1d2b34;
+  font-weight: 600;
+}
+
+.eyes {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.1s ease-out;
+}
+
+.dog.cover-eyes .paws {
+  transform: translate(-50%, -35px);
+}
+
+.dog.cover-eyes .paws span {
+  width: 40px;
+  height: 26px;
+  border-radius: 12px;
+}
+
+.dog.cover-eyes .eye {
+  width: 18px;
+  height: 4px;
+  border-radius: 8px;
+  background: #1d2b34;
+  top: 62px;
+}
+
+
+.paws {
+  transition: transform 0.3s ease;
+}
