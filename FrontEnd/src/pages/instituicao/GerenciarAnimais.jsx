@@ -21,7 +21,7 @@ export default function GerenciarAnimais() {
       const matchesSearch =
         !filters.search ||
         animal.nome.toLowerCase().includes(filters.search.toLowerCase()) ||
-        animal.cidade.toLowerCase().includes(filters.search.toLowerCase())
+        (animal.cidade || "").toLowerCase().includes(filters.search.toLowerCase())
 
       const matchesSpecies =
         !filters.especie || animal.especie === filters.especie
@@ -35,7 +35,7 @@ export default function GerenciarAnimais() {
   const stats = {
     total: animals.length,
     disponiveis: animals.filter((animal) => animal.status === "DISPONIVEL").length,
-    tratamento: animals.filter((animal) => animal.status === "EM_TRATAMENTO").length,
+    indisponiveis: animals.filter((animal) => animal.status === "INDISPONIVEL").length,
     adotados: animals.filter((animal) => animal.status === "ADOTADO").length,
   }
 
@@ -85,7 +85,7 @@ export default function GerenciarAnimais() {
                 <div className="details-meta" style={{ marginTop: 14 }}>
                   <span>{stats.total} registros</span>
                   <span>{stats.disponiveis} disponiveis</span>
-                  <span>{stats.tratamento} em tratamento</span>
+                  <span>{stats.indisponiveis} indisponiveis</span>
                 </div>
               </div>
             </div>
@@ -112,9 +112,9 @@ export default function GerenciarAnimais() {
               <p>Perfis prontos para receber interesse.</p>
             </article>
             <article className="dashboard-card">
-              <span className="profile-eyebrow">Tratamento</span>
-              <h3>{stats.tratamento}</h3>
-              <p>Casos com acompanhamento clinico.</p>
+              <span className="profile-eyebrow">Indisponiveis</span>
+              <h3>{stats.indisponiveis}</h3>
+              <p>Casos pausados ou temporariamente inativos.</p>
             </article>
             <article className="dashboard-card">
               <span className="profile-eyebrow">Adotados</span>
@@ -165,7 +165,6 @@ export default function GerenciarAnimais() {
               >
                 <option value="">Todos os status</option>
                 <option value="DISPONIVEL">Disponivel</option>
-                <option value="EM_TRATAMENTO">Em tratamento</option>
                 <option value="INDISPONIVEL">Indisponivel</option>
                 <option value="ADOTADO">Adotado</option>
               </select>
@@ -217,7 +216,6 @@ export default function GerenciarAnimais() {
                           }
                         >
                           <option value="DISPONIVEL">Disponivel</option>
-                          <option value="EM_TRATAMENTO">Em tratamento</option>
                           <option value="INDISPONIVEL">Indisponivel</option>
                           <option value="ADOTADO">Adotado</option>
                         </select>

@@ -123,11 +123,6 @@ export default function Login() {
             {loading ? "Entrando..." : "Entrar"}
           </button>
 
-          <p className="helper-text">
-            Teste: `contato@patinhas.org` / `123456` ou `ana@email.com` /
-            `123456`
-          </p>
-
           <div className="login-links-cute">
             <Link to="/cadastro">Criar conta</Link>
             <Link to="/animais">Ver animais</Link>

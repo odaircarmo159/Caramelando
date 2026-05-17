@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import {
   createAnimal,
+  deleteAnimal,
   getAnimalById,
   getAnimals,
   getInstitutionAnimals,
@@ -88,7 +89,7 @@ export function useInstitutionAnimals(instituicaoId) {
     }
 
     setLoading(true)
-    const data = await getInstitutionAnimals(instituicaoId)
+    const data = await getInstitutionAnimals()
     setAnimals(data)
     setLoading(false)
   }
@@ -109,11 +110,17 @@ export function useInstitutionAnimals(instituicaoId) {
     return updated
   }
 
+  async function removeAnimal(id) {
+    await deleteAnimal(id)
+    await refresh()
+  }
+
   return {
     animals,
     loading,
     refresh,
     addAnimal,
     editAnimal,
+    removeAnimal,
   }
 }

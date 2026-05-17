@@ -14,21 +14,25 @@
     gap: 20px;
   }
   
-  .logo {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #ff8c42;
-  }
+.logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #ff8c42;
+}
   
   .nav {
     display: flex;
     gap: 16px;
   }
   
-  .nav a {
-    color: #444;
-    font-weight: 600;
-  }
+.nav a {
+  color: #444;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
   
   .nav a:hover {
     color: #ff8c42;

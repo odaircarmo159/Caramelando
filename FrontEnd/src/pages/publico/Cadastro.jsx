@@ -240,8 +240,8 @@ export default function Cadastro() {
                   <div className="form-group">
                     <label>Documento de verificacao</label>
                     <input
-                      type="text"
-                      placeholder="Ex: estatuto-social.pdf"
+                      type="url"
+                      placeholder="https://..."
                       value={form.documentoVerificacao}
                       onChange={(event) =>
                         updateField("documentoVerificacao", event.target.value)

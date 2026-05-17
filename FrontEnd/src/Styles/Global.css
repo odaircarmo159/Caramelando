@@ -1,31 +1,57 @@
 :root {
-    --bg: #f7f6f2;
-    --text: #1b1b1b;
-    --muted: #5c5c5c;
-    --brand: #6ab04c;
-    --brand-dark: #4d8c36;
-    --card: #ffffff;
-    --border: #e5e1d8;
-  }
-  
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
-    background: var(--bg);
-    color: var(--text);
-  }
-  
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  main {
-    min-height: 100vh;
-  }
+  --bg: #f7f6f2;
+  --text: #1b1b1b;
+  --muted: #5c5c5c;
+  --brand: #6ab04c;
+  --brand-dark: #4d8c36;
+  --card: #ffffff;
+  --border: #e5e1d8;
+  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+.section-title h2,
+.hero h1 {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+main {
+  min-height: 100vh;
+}
   

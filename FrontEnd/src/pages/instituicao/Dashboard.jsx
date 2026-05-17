@@ -26,13 +26,10 @@ export default function Dashboard() {
   }
 
   const disponiveis = animals.filter((animal) => animal.status === "DISPONIVEL")
-  const emTratamento = animals.filter(
-    (animal) => animal.status === "EM_TRATAMENTO"
-  )
-  const adotados = animals.filter((animal) => animal.status === "ADOTADO")
   const indisponiveis = animals.filter(
     (animal) => animal.status === "INDISPONIVEL"
   )
+  const adotados = animals.filter((animal) => animal.status === "ADOTADO")
   const latestAnimals = animals.slice(0, 3)
   const completionFields = [
     user.nome,
@@ -61,7 +58,6 @@ export default function Dashboard() {
                 <div className="details-meta" style={{ marginTop: 14 }}>
                   <span>{user.statusCadastro?.replaceAll("_", " ")}</span>
                   <span>{animals.length} animais no painel</span>
-                  <span>Painel institucional</span>
                 </div>
               </div>
             </div>
@@ -91,9 +87,9 @@ export default function Dashboard() {
               <p>Prontos para receber contato de adotantes.</p>
             </article>
             <article className="dashboard-card">
-              <span className="profile-eyebrow">Em tratamento</span>
-              <h3>{animalsLoading ? "..." : emTratamento.length}</h3>
-              <p>Demandam acompanhamento clinico ou recuperacao.</p>
+              <span className="profile-eyebrow">Indisponiveis</span>
+              <h3>{animalsLoading ? "..." : indisponiveis.length}</h3>
+              <p>Demandam pausa temporaria ou indisponibilidade.</p>
             </article>
             <article className="dashboard-card">
               <span className="profile-eyebrow">Concluidos</span>
@@ -120,16 +116,16 @@ export default function Dashboard() {
                   <span>Animais aptos para divulgacao</span>
                 </article>
                 <article className="ops-tile">
-                  <strong>{emTratamento.length}</strong>
-                  <span>Casos que exigem atencao clinica</span>
-                </article>
-                <article className="ops-tile">
                   <strong>{indisponiveis.length}</strong>
                   <span>Registros pausados ou temporariamente inativos</span>
                 </article>
                 <article className="ops-tile">
                   <strong>{adotados.length}</strong>
                   <span>Historico de animais com jornada encerrada</span>
+                </article>
+                <article className="ops-tile">
+                  <strong>{animals.length}</strong>
+                  <span>Animais monitorados pela instituicao</span>
                 </article>
               </div>
             </section>
@@ -153,7 +149,7 @@ export default function Dashboard() {
                 <div>
                   <strong>Status cadastral</strong>
                   <p>
-                    {user.statusCadastro === "EM_ANALISE"
+                    {user.statusCadastro === "EM_VALIDACAO"
                       ? "A instituicao esta em analise."
                       : "Conta institucional pronta para operacao."}
                   </p>

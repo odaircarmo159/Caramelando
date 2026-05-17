@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom"
 import Header from "../../assets/components/common/Header"
 import { useAuth } from "../../hooks/useAuth"
 import { useInstitutionAnimals } from "../../hooks/useAnimals"
+import { uploadAnimalImage } from "../../services/api"
 
 const initialForm = {
   nome: "",
@@ -13,8 +14,8 @@ const initialForm = {
   status: "DISPONIVEL",
   castrado: true,
   vacinado: true,
+  vermifugado: true,
   descricao: "",
-  fotosUrl: "",
   cidade: "",
   estado: "MS",
   contatoWhatsapp: "",
@@ -27,9 +28,33 @@ export default function CadastrarAnimais() {
   const [form, setForm] = useState(initialForm)
   const [feedback, setFeedback] = useState("")
   const [saving, setSaving] = useState(false)
+  const [photoFiles, setPhotoFiles] = useState([])
+  const [photoPreviews, setPhotoPreviews] = useState([])
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }))
+  }
+
+  function handlePhotoSelection(event) {
+    const files = Array.from(event.target.files || [])
+
+    if (!files.length) {
+      return
+    }
+
+    setPhotoFiles((current) => [...current, ...files])
+    setPhotoPreviews((current) => [
+      ...current,
+      ...files.map((file) => URL.createObjectURL(file)),
+    ])
+    event.target.value = ""
+  }
+
+  function removePhoto(indexToRemove) {
+    setPhotoFiles((current) => current.filter((_, index) => index !== indexToRemove))
+    setPhotoPreviews((current) =>
+      current.filter((_, index) => index !== indexToRemove)
+    )
   }
 
   async function handleSubmit(event) {
@@ -38,10 +63,18 @@ export default function CadastrarAnimais() {
     setFeedback("")
 
     try {
+      if (photoFiles.length < 4) {
+        throw new Error("Adicione pelo menos 4 fotos do animal.")
+      }
+
+      const uploadedPhotoUrls = await Promise.all(
+        photoFiles.map((file) => uploadAnimalImage(file))
+      )
+
       await addAnimal({
         ...form,
         idadeEstimada: Number(form.idadeEstimada),
-        fotosUrl: [form.fotosUrl],
+        fotosUrl: uploadedPhotoUrls,
         instituicaoId: user.id,
         instituicaoNome: user.nome,
       })
@@ -138,7 +171,6 @@ export default function CadastrarAnimais() {
                   onChange={(event) => updateField("status", event.target.value)}
                 >
                   <option value="DISPONIVEL">Disponivel</option>
-                  <option value="EM_TRATAMENTO">Em tratamento</option>
                   <option value="INDISPONIVEL">Indisponivel</option>
                   <option value="ADOTADO">Adotado</option>
                 </select>
@@ -171,12 +203,40 @@ export default function CadastrarAnimais() {
               </label>
 
               <label>
-                URL da foto
+                Fotos do animal
                 <input
-                  value={form.fotosUrl}
-                  onChange={(event) => updateField("fotosUrl", event.target.value)}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handlePhotoSelection}
                 />
               </label>
+
+              {photoPreviews.length ? (
+                <div className="full-width">
+                  <p style={{ margin: "4px 0 12px", color: "#8a6a43", fontWeight: 600 }}>
+                    Envie pelo menos 4 fotos para montar a vitrine do animal. Voce pode selecionar mais de uma vez que elas vao sendo acumuladas.
+                  </p>
+                  <div className="pet-upload-grid">
+                    {photoPreviews.map((preview, index) => (
+                      <div key={`${preview}-${index}`} className="pet-upload-card">
+                        <img
+                          src={preview}
+                          alt={`Preview ${index + 1}`}
+                          className="pet-upload-preview"
+                        />
+                        <button
+                          type="button"
+                          className="pet-upload-remove"
+                          onClick={() => removePhoto(index)}
+                        >
+                          Remover
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
 
               <label>
                 Castrado
@@ -197,6 +257,19 @@ export default function CadastrarAnimais() {
                   value={String(form.vacinado)}
                   onChange={(event) =>
                     updateField("vacinado", event.target.value === "true")
+                  }
+                >
+                  <option value="true">Sim</option>
+                  <option value="false">Nao</option>
+                </select>
+              </label>
+
+              <label>
+                Vermifugado
+                <select
+                  value={String(form.vermifugado)}
+                  onChange={(event) =>
+                    updateField("vermifugado", event.target.value === "true")
                   }
                 >
                   <option value="true">Sim</option>

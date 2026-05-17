@@ -24,7 +24,6 @@ export default function AnimaisFiltros({ filters, onChange }) {
         <option value="">Todos os status</option>
         <option value="DISPONIVEL">Disponivel</option>
         <option value="ADOTADO">Adotado</option>
-        <option value="EM_TRATAMENTO">Em tratamento</option>
         <option value="INDISPONIVEL">Indisponivel</option>
       </select>
     </section>

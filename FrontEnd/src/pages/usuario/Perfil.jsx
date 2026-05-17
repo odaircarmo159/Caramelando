@@ -14,8 +14,6 @@ export default function Perfil() {
     telefone: "",
     cidade: "",
     estado: "",
-    bio: "",
-    preferenciaAdocao: "",
   })
 
   useEffect(() => {
@@ -26,8 +24,6 @@ export default function Perfil() {
         telefone: user.telefone ?? "",
         cidade: user.cidade ?? "",
         estado: user.estado ?? "",
-        bio: user.bio ?? "",
-        preferenciaAdocao: user.preferenciaAdocao ?? "",
       })
     }
   }, [user])
@@ -184,26 +180,6 @@ export default function Perfil() {
                     />
                   </label>
 
-                  <label className="full-width">
-                    Preferencias de adocao
-                    <input
-                      value={form.preferenciaAdocao}
-                      disabled={!isEditing}
-                      onChange={(event) =>
-                        updateField("preferenciaAdocao", event.target.value)
-                      }
-                    />
-                  </label>
-
-                  <label className="full-width">
-                    Sobre voce
-                    <textarea
-                      value={form.bio}
-                      disabled={!isEditing}
-                      onChange={(event) => updateField("bio", event.target.value)}
-                    />
-                  </label>
-
                   {isEditing ? (
                     <div className="dashboard-actions full-width">
                       <button className="btn" type="submit" disabled={isSaving}>
@@ -221,8 +197,6 @@ export default function Perfil() {
                             telefone: user.telefone ?? "",
                             cidade: user.cidade ?? "",
                             estado: user.estado ?? "",
-                            bio: user.bio ?? "",
-                            preferenciaAdocao: user.preferenciaAdocao ?? "",
                           })
                         }}
                       >
@@ -273,9 +247,7 @@ export default function Perfil() {
                               user.telefone,
                               user.cidade,
                               user.estado,
-                              user.bio,
-                              user.preferenciaAdocao,
-                            ].filter(Boolean).length * 14
+                            ].filter(Boolean).length * 20
                           }%`,
                         }}
                       />

@@ -1,14 +1,5 @@
-import {
-  STORAGE_KEYS,
-  defaultAnimals,
-  defaultInstitutions,
-  defaultUsers,
-  generateId,
-  readList,
-  writeList,
-} from "../mocks/data"
-
 const API_URL = import.meta.env.VITE_API_URL
+const SESSION_STORAGE_KEY = "caramelando.session"
 
 function buildUrl(endpoint) {
   if (!API_URL) {
@@ -18,29 +9,52 @@ function buildUrl(endpoint) {
   return `${API_URL}${endpoint}`
 }
 
-function normalizeAnimal(animal) {
-  return {
-    ...animal,
-    fotosUrl: Array.isArray(animal.fotosUrl)
-      ? animal.fotosUrl.filter(Boolean)
-      : animal.fotosUrl
-        ? [animal.fotosUrl]
-        : [],
+function toQueryString(params) {
+  const searchParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      searchParams.set(key, value)
+    }
+  })
+
+  const queryString = searchParams.toString()
+  return queryString ? `?${queryString}` : ""
+}
+
+export function readStoredSession() {
+  if (typeof window === "undefined") {
+    return null
   }
+
+  const rawSession = localStorage.getItem(SESSION_STORAGE_KEY)
+  return rawSession ? JSON.parse(rawSession) : null
 }
 
-function readAnimals() {
-  return readList(STORAGE_KEYS.animals, defaultAnimals)
+export function writeStoredSession(session) {
+  if (typeof window === "undefined") {
+    return
+  }
+
+  if (!session) {
+    localStorage.removeItem(SESSION_STORAGE_KEY)
+    return
+  }
+
+  localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session))
 }
 
-function writeAnimals(animals) {
-  writeList(STORAGE_KEYS.animals, animals)
+function getAccessToken() {
+  return readStoredSession()?.accessToken || null
 }
 
 export async function apiRequest(endpoint, options = {}) {
+  const token = options.auth === false ? null : getAccessToken()
+
   const response = await fetch(buildUrl(endpoint), {
     headers: {
       "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(options.headers || {}),
     },
     ...options,
@@ -55,92 +69,103 @@ export async function apiRequest(endpoint, options = {}) {
   return data
 }
 
-export async function getAnimals(filters = {}) {
-  const animals = readAnimals()
-
-  return animals.filter((animal) => {
-    const matchesSearch =
-      !filters.search ||
-      animal.nome.toLowerCase().includes(filters.search.toLowerCase()) ||
-      animal.cidade.toLowerCase().includes(filters.search.toLowerCase())
-
-    const matchesSpecies =
-      !filters.especie || animal.especie === filters.especie
-
-    const matchesStatus = !filters.status || animal.status === filters.status
-
-    return matchesSearch && matchesSpecies && matchesStatus
+export async function loginRequest(payload) {
+  return apiRequest("/auth/login", {
+    method: "POST",
+    auth: false,
+    body: JSON.stringify(payload),
   })
+}
+
+export async function getCurrentSession() {
+  return apiRequest("/auth/me")
+}
+
+export async function registerUser(payload) {
+  return apiRequest("/usuarios/register", {
+    method: "POST",
+    auth: false,
+    body: JSON.stringify(payload),
+  })
+}
+
+export async function registerInstitution(payload) {
+  return apiRequest("/ongs", {
+    method: "POST",
+    auth: false,
+    body: JSON.stringify(payload),
+  })
+}
+
+export async function updateCurrentUser(payload) {
+  return apiRequest("/usuarios/me", {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  })
+}
+
+export async function getAnimals(filters = {}) {
+  return apiRequest(`/animais${toQueryString(filters)}`, { auth: false })
 }
 
 export async function getAnimalById(animalId) {
-  const animal = readAnimals().find((item) => item.id === animalId)
-
-  if (!animal) {
-    throw new Error("Animal nao encontrado.")
-  }
-
-  return animal
+  return apiRequest(`/animais/${animalId}`, { auth: false })
 }
 
-export async function getInstitutionAnimals(instituicaoId) {
-  return readAnimals().filter((animal) => animal.instituicaoId === instituicaoId)
+export async function getInstitutionAnimals() {
+  return apiRequest("/animais/me/ong")
 }
 
 export async function createAnimal(payload) {
-  const animals = readAnimals()
-  const animal = normalizeAnimal({
-    ...payload,
-    id: generateId("animal"),
+  return apiRequest("/animais", {
+    method: "POST",
+    body: JSON.stringify(payload),
   })
-
-  writeAnimals([animal, ...animals])
-  return animal
 }
 
 export async function updateAnimal(animalId, payload) {
-  const animals = readAnimals()
-  const index = animals.findIndex((animal) => animal.id === animalId)
-
-  if (index === -1) {
-    throw new Error("Animal nao encontrado.")
-  }
-
-  const updatedAnimal = normalizeAnimal({
-    ...animals[index],
-    ...payload,
-    id: animalId,
+  return apiRequest(`/animais/${animalId}`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
   })
+}
 
-  animals[index] = updatedAnimal
-  writeAnimals(animals)
-
-  return updatedAnimal
+export async function deleteAnimal(animalId) {
+  return apiRequest(`/animais/${animalId}`, {
+    method: "DELETE",
+  })
 }
 
 export async function getPlatformStats() {
-  const animals = readAnimals()
-  const institutions = readInstitutions()
+  return apiRequest("/animais/stats/platform", { auth: false })
+}
 
-  return {
-    totalAnimals: animals.length,
-    totalAdoptions: animals.filter((animal) => animal.status === "ADOTADO").length,
-    totalInstitutions: institutions.length,
+export async function uploadAnimalImage(file) {
+  if (!file) {
+    throw new Error("Selecione uma imagem para upload.")
   }
-}
 
-export function readUsers() {
-  return readList(STORAGE_KEYS.users, defaultUsers)
-}
+  const token = getAccessToken()
 
-export function writeUsers(users) {
-  writeList(STORAGE_KEYS.users, users)
-}
+  if (!token) {
+    throw new Error("Voce precisa estar autenticado para enviar imagens.")
+  }
 
-export function readInstitutions() {
-  return readList(STORAGE_KEYS.institutions, defaultInstitutions)
-}
+  const response = await fetch(buildUrl("/uploads/animal-image"), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": file.type || "application/octet-stream",
+      "x-file-name": file.name,
+    },
+    body: file,
+  })
 
-export function writeInstitutions(institutions) {
-  writeList(STORAGE_KEYS.institutions, institutions)
+  const data = await response.json().catch(() => null)
+
+  if (!response.ok) {
+    throw new Error(data?.message || "Nao foi possivel enviar a imagem.")
+  }
+
+  return data.publicUrl
 }
